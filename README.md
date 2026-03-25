@@ -1,4 +1,11 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Evolution Simulator Engine (C++ OOP Framework)
+### Descriere Proiect
+
+
+Evolution Simulator Engine este un framework orientat pe obiecte, scris în C++, care simulează procesul de selecție naturală bazat pe algoritmi genetici. Proiectul modelează un ecosistem virtual în care entitățile (organismele) se adaptează la un mediu specific de-a lungul a multiple generații.
+
+Sistemul implementează mecanisme biologice fundamentale: evaluarea fitness-ului, selecția, încrucișarea și mutația genetică.
+
 
 ### Folosiți template-ul corespunzător grupei voastre!
 
