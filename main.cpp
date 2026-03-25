@@ -283,7 +283,7 @@ int main() {
     std::cout << "\n=== Ecosistem Dupa Evolutie (Generatia " << numarGeneratii << ") ===\n";
     std::cout << earth;
 
-    std::cout << "\nSimulare incheiata cu succes. Demo complet.\n";
+    std::cout << "\nSimulare incheiata cu succes. Demo complet.\n"; 
 
 
    
