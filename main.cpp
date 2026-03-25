@@ -279,5 +279,5 @@ int main() {
     std::cout << earth;
 
     std::cout << "\nSimulare incheiata cu succes. Demo complet.\n";
-    return 0;
+    return 0; 
 }
