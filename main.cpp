@@ -40,7 +40,7 @@ private:
 
 public:
     // constructor cu parametri
-    Chromosome(int size = 0) : numGenes(size) {
+    explicit Chromosome(int size = 0) : numGenes(size) {
         if (size > 0) {
             genes = new Gene[size];
         }
@@ -279,5 +279,11 @@ int main() {
     std::cout << earth;
 
     std::cout << "\nSimulare incheiata cu succes. Demo complet.\n";
+
+
+    // liniștim cppcheck-ul
+    std::cout << "Debug: Primul nume de individ: " << earth.getOrganisms()[0].getName() << "\n";
+    Example ex;
+    ex.g();
     return 0; 
 }
