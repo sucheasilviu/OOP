@@ -266,8 +266,7 @@ int main() {
     std::cout << earth;
 
     // a 2-a transa de date de intrare
-    int numarGeneratii;
-    float rataMutatie;
+    
     std::cout << "\nCate generatii doriti sa simulati si cu ce rata de mutatie (ex: 10 0.15)? ";
     std::cin >> numarGeneratii >> rataMutatie; // citite din tastatura.txt
 
