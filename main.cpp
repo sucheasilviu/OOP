@@ -5,45 +5,41 @@
 #include <ctime>
 #include <algorithm>
 
-// ==========================================
 // 1. Clasa Gene (Nivelul de baza)
-// ==========================================
 class Gene {
 private:
     std::string traitName;
     float value;
 
 public:
-    // Constructor default (necesar pentru alocarea dinamica de array-uri mai tarziu)
+    // constructor default
     Gene() : traitName("Unknown"), value(0.0f) {}
 
-    // Constructor de initializare cu parametri
+    // constructor de initializare cu parametri
     Gene(const std::string& name, float val) : traitName(name), value(val) {}
 
-    // Getteri const (nu modifica starea obiectului)
+    // getteri const
     float getValue() const { return value; }
     const std::string& getName() const { return traitName; }
 
-    // Setteri
+    // setteri
     void setValue(float val) { value = val; }
 
-    // Operator<< pentru afisare
+    // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Gene& g) {
         os << "[" << g.traitName << ": " << g.value << "]";
         return os;
     }
 };
 
-// ==========================================
-// 2. Clasa Chromosome (Implementeaza "The Big Three")
-// ==========================================
+// 2. clasa chromosome big3
 class Chromosome {
 private:
-    Gene* genes; // Pointer pentru alocare dinamica (justifica Big Three)
+    Gene* genes; // Pointer aloc din
     int numGenes;
 
 public:
-    // Constructor cu parametri
+    // constructor cu parametri
     Chromosome(int size = 0) : numGenes(size) {
         if (size > 0) {
             genes = new Gene[size];
@@ -53,13 +49,12 @@ public:
         }
     }
 
-    // --- THE BIG THREE ---
-    // 1. Destructor
+    // 1. destructor
     ~Chromosome() {
         delete[] genes;
     }
 
-    // 2. Copy Constructor (Constructor de copiere)
+    // 2. copy constructor
     Chromosome(const Chromosome& other) : numGenes(other.numGenes) {
         if (numGenes > 0) {
             genes = new Gene[numGenes];
@@ -72,7 +67,7 @@ public:
         }
     }
 
-    // 3. Operator= (Copy Assignment)
+    // 3. operator=
     Chromosome& operator=(const Chromosome& other) {
         if (this != &other) { // evitam auto-asignarea
             delete[] genes; // stergem memoria veche
@@ -90,7 +85,7 @@ public:
         return *this;
     }
 
-    // Metode de acces
+    // metode acces
     void setGene(int index, const Gene& g) {
         if (index >= 0 && index < numGenes) {
             genes[index] = g;
@@ -103,7 +98,7 @@ public:
 
     int getSize() const { return numGenes; }
 
-    // Functie netriviala 1: Mutația (modifica aleator o gena)
+    // functie netriviala 1 (mutatie)
     void mutate(float mutationRate) {
         for (int i = 0; i < numGenes; ++i) {
             float chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
@@ -115,11 +110,11 @@ public:
         }
     }
 
-    // Functie complexa 2: Crossover (combina ADN-ul a doi parinti)
+    // functie complexa 2 (crossover)
     Chromosome crossover(const Chromosome& partner) const {
         Chromosome child(numGenes);
         for (int i = 0; i < numGenes; ++i) {
-            // Ia jumatate din gene de la 'this', jumatate de la 'partner'
+            // ia jumatate din gene de la 'this', jumatate de la 'partner'
             if (i % 2 == 0) {
                 child.setGene(i, this->genes[i]);
             }
@@ -130,7 +125,7 @@ public:
         return child;
     }
 
-    // Operator<< (Compunere de apeluri)
+    // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Chromosome& c) {
         os << "ADN: { ";
         for (int i = 0; i < c.numGenes; ++i) {
@@ -141,20 +136,19 @@ public:
     }
 };
 
-// ==========================================
-// 3. Clasa Organism
-// ==========================================
+// 3. clasa organism
 class Organism {
 private:
     std::string name;
-    Chromosome dna; // Compunere (Organismul contine un Cromozom)
+    Chromosome dna; // compunere (organismul contine un cromozom)
     float fitnessScore;
 
 public:
-    // Constructor cu parametri
+    Organism() : name("Unknown"), dna(0), fitnessScore(0.0f) {}
+    // constructor cu parametri
     Organism(const std::string& n, const Chromosome& d) : name(n), dna(d), fitnessScore(0.0f) {}
 
-    // Calculeaza scorul de supravietuire pe baza genelor
+    // calculeaza scorul de supravietuire bazat pe gene
     void evaluateFitness() {
         fitnessScore = 0.0f;
         for (int i = 0; i < dna.getSize(); ++i) {
@@ -166,53 +160,51 @@ public:
     const Chromosome& getDna() const { return dna; }
     const std::string& getName() const { return name; }
 
-    // Operator<< (Compunere de apeluri)
+    // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Organism& o) {
         os << "Organism [" << o.name << "] | Fitness: " << o.fitnessScore << "\n  " << o.dna;
         return os;
     }
 };
 
-// ==========================================
-// 4. Clasa Environment (Mediul)
-// ==========================================
+// 4. clasa environment
 class Environment {
 private:
-    std::vector<Organism> population; // Compunere cu std::vector
+    std::vector<Organism> population;
     int currentGeneration;
 
 public:
-    // Constructor cu parametri
+    // constructor cu parametri
     Environment(int startGen = 0) : currentGeneration(startGen) {}
 
     void addOrganism(const Organism& org) {
         population.push_back(org);
     }
 
-    // Functie complexa 3: Simularea unei generatii întregi
+    // functie complexa 3 (simulare geberatie)
     void simulateGeneration(float mutationRate) {
         if (population.empty()) return;
 
-        // 1. Evaluam fitness-ul tuturor
+        // 1. evaluam fitness
         for (auto& org : population) {
             org.evaluateFitness();
         }
 
-        // 2. Sortam populatia descrescator dupa fitness
+        // 2. sortam populatia descrescator
         std::sort(population.begin(), population.end(), [](const Organism& a, const Organism& b) {
             return a.getFitness() > b.getFitness();
             });
 
-        // 3. Taiem jumatatea mai slaba (Selectia naturala)
+        // 3. taiem jumatatea mai slaba (selectie naturala EZZZZ)
         int survivorsCount = population.size() / 2;
-        if (survivorsCount == 0) survivorsCount = 1; // Preventie erori pe populatii mici
+        if (survivorsCount == 0) survivorsCount = 1; // preventie erori pe populatii mici
         population.resize(survivorsCount);
 
-        // 4. Repopulam prin Crossover (Reproducere) pentru a ajunge inapoi la numarul initial
+        // 4. repopulam prin crossover pentru a ajunge inapoi la numarul initial
         int currentSize = population.size();
         for (int i = 0; i < currentSize; ++i) {
             const Chromosome& parent1 = population[i].getDna();
-            // Incrucisam cu urmatorul individ (ciclic)
+            // incrucisam cu urmatorul individ
             int partnerIndex = (i + 1) % currentSize;
             const Chromosome& parent2 = population[partnerIndex].getDna();
 
@@ -227,7 +219,7 @@ public:
         currentGeneration++;
     }
 
-    // Operator<< (Compunere de apeluri)
+    // operator<<
     friend std::ostream& operator<<(std::ostream& os, const Environment& env) {
         os << "=== Generatia " << env.currentGeneration << " ===\n";
         for (const auto& org : env.population) {
@@ -237,26 +229,27 @@ public:
     }
 };
 
-// ==========================================
-// MAIN (Punctul de intrare)
-// ==========================================
 int main() {
-    // Initializare seed pentru generarea de numere aleatoare (mutatiile)
+    // initializare seed pentru generarea de numere aleatoare (mutatiile)
     srand(static_cast<unsigned>(time(nullptr)));
 
     std::cout << "=== Simulator Evolutiv: Setup Initial ===\n";
 
-    int nrOrganismeInitiale;
+    int nrOrganismeInitiale = 0;
+    float viteza = 0.0f, vedere = 0.0f, putere = 0.0f;
+    int numarGeneratii = 0;
+    float rataMutatie = 0.0f;
+
     std::cout << "Cati indivizi cream in Generatia 0? ";
-    std::cin >> nrOrganismeInitiale; // Citit din tastatura.txt
+    std::cin >> nrOrganismeInitiale; // citit din tastatura.txt
 
     Environment earth(0);
 
-    // Citim cateva gene de baza pentru primele organisme
+    // citim cateva gene de baza pentru primele organisme
     for (int i = 0; i < nrOrganismeInitiale; ++i) {
         float viteza, vedere, putere;
         std::cout << "Introduceti 3 valori genetice (Viteza Vedere Putere) pentru Organismul " << i << ": ";
-        std::cin >> viteza >> vedere >> putere; // Citite din tastatura.txt
+        std::cin >> viteza >> vedere >> putere; // citite din tastatura.txt
 
         Chromosome adn(3);
         adn.setGene(0, Gene("Viteza", viteza));
@@ -264,7 +257,7 @@ int main() {
         adn.setGene(2, Gene("Putere", putere));
 
         Organism org("Gen0_Individ_" + std::to_string(i), adn);
-        org.evaluateFitness(); // Evaluam scorul imediat ce s-a nascut
+        org.evaluateFitness(); // evaluam scorul imediat ce s-a nascut
         earth.addOrganism(org);
     }
 
@@ -272,11 +265,11 @@ int main() {
     std::cout << "\nAm terminat de citit populatia initiala. Iata starea ecosistemului:\n";
     std::cout << earth;
 
-    // A doua transa de date de intrare
+    // a 2-a transa de date de intrare
     int numarGeneratii;
     float rataMutatie;
     std::cout << "\nCate generatii doriti sa simulati si cu ce rata de mutatie (ex: 10 0.15)? ";
-    std::cin >> numarGeneratii >> rataMutatie; // Citite din tastatura.txt
+    std::cin >> numarGeneratii >> rataMutatie; // citite din tastatura.txt
 
     std::cout << "\n=== Incepem simularea pentru " << numarGeneratii << " generatii... ===\n\n";
 
