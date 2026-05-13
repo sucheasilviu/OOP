@@ -14,6 +14,9 @@ int main() {
         adn1.addTrait(std::make_unique<PhysicalTrait>("Putere", 10.5f, 4.2f));
         adn1.addTrait(std::make_unique<SensoryTrait>("Vedere", 8.0f, 100.0f));
 
+        //A 4-a trasatura
+        adn1.addTrait(std::make_unique<BehavioralTrait>("Teritorialitate", 5.0f, 8.5f));
+
         Chromosome adn2;
         adn2.addTrait(std::make_unique<PhysicalTrait>("Viteza", 15.0f, 2.0f));
         adn2.addTrait(std::make_unique<MetabolicTrait>("Digestie", 5.0f, 0.8f));

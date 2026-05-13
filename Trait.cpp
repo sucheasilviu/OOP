@@ -43,3 +43,20 @@ void MetabolicTrait::printImpl(std::ostream& os) const {
 void MetabolicTrait::mutateImpl(float rate) {
     energyEfficiency -= energyEfficiency * rate; // Mutatie care scade eficienta (sau o creste, depinde de semn)
 }
+
+// -- BehavioralTrait --
+float BehavioralTrait::calculateFitnessImpl() const {
+    return baseValue + (aggressionLevel * 1.2f); // O trăsătură agresivă crește fitness-ul
+}
+
+std::unique_ptr<Trait> BehavioralTrait::cloneImpl() const {
+    return std::make_unique<BehavioralTrait>(*this);
+}
+
+void BehavioralTrait::printImpl(std::ostream& os) const {
+    os << "[Comportamental | " << name << ": " << baseValue << ", Agresivitate: " << aggressionLevel << "]";
+}
+
+void BehavioralTrait::mutateImpl(float rate) {
+    aggressionLevel += aggressionLevel * (rate * 1.5f); // Agresivitatea mutilează mai rapid
+}

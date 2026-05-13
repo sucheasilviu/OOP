@@ -85,3 +85,19 @@ private:
     void printImpl(std::ostream& os) const override;
     void mutateImpl(float rate) override;
 };
+
+
+// Derivata 4 (Adaugata la final pentru cerinta Open/Closed)
+class BehavioralTrait : public Trait {
+private:
+    float aggressionLevel;
+public:
+    BehavioralTrait(const std::string& n, float val, float aggression)
+        : Trait(n, val), aggressionLevel(aggression) {}
+
+private:
+    float calculateFitnessImpl() const override;
+    std::unique_ptr<Trait> cloneImpl() const override;
+    void printImpl(std::ostream& os) const override;
+    void mutateImpl(float rate) override;
+};
