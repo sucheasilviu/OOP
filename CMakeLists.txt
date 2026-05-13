@@ -51,10 +51,10 @@ include(cmake/CopyHelper.cmake)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
      main.cpp
-        Trait.cpp
-        Chromosome.cpp
-        Organism.cpp
-        Environment.cpp
+        src/Trait.cpp
+        src/Chromosome.cpp
+        src/Organism.cpp
+        src/Environment.cpp
 )
 #target_sources(${MAIN_EXECUTABLE_NAME} --------------------------------------------
     #PRIVATE

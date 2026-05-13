@@ -4,7 +4,7 @@
 #include <iostream>
 
 int main() {
-    std::cout << "=== Simulator Evolutiv v2.0 ===\n";
+    std::cout << "=== Evolution Simulator Engine v2.1 ===\n";
 
     try { // Demonstratie Try/Catch cu ierarhia de exceptii
         Environment earth(0);
